@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>TinySynth</title>
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <h1>🎹 TinySynth</h1>
+        <div class="octave-ctl">
+          <button id="octDown" title="Octave down (Z)">−</button>
+          <span id="octave">Octave: C4</span>
+          <button id="octUp" title="Octave up (X)">+</button>
+        </div>
+      </header>
+
+      <div id="controls"></div>
+
+      <div class="keyboard-area">
+        <div id="piano"></div>
+        <p class="hint">
+          Play with your keyboard —
+          <kbd>A</kbd><kbd>W</kbd><kbd>S</kbd><kbd>E</kbd><kbd>D</kbd><kbd>F</kbd><kbd>T</kbd><kbd>G</kbd>…
+          · shift octave with <kbd>Z</kbd> / <kbd>X</kbd> · or click the keys
+        </p>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

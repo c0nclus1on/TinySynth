@@ -1,0 +1,29 @@
+{
+  "name": "tinysynth",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "A tiny polyphonic web synthesizer (proof of concept) built on the Web Audio API.",
+  "author": "c0nclus1on <arwindh@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/c0nclus1on/TinySynth#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/c0nclus1on/TinySynth.git"
+  },
+  "bugs": {
+    "url": "https://github.com/c0nclus1on/TinySynth/issues"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": ["synthesizer", "web-audio", "polyphonic", "synth", "vite"],
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  }
+}

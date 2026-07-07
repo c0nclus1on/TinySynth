@@ -17,8 +17,10 @@ keyboard or the on-screen keys.
 - **LFO** — sine/tri/square/saw, with rate, depth, and a destination switch
   (off / pitch vibrato / filter wobble).
 - **Master volume** with a limiter on the output to tame chord peaks.
-- **Play it** with the computer keyboard (`A W S E D F …`, a virtual-piano
-  layout), `Z` / `X` to shift octave, or click/tap the on-screen keys.
+- **Play it** with the computer keyboard — a two-octave piano layout: lower
+  octave on `Z X C V B N M` (sharps `S D G H J`), upper octave on
+  `Q W E R T Y U` (sharps `2 3 5 6 7`); arrow keys shift octave; or click/tap
+  the on-screen keys.
 
 Signal path per voice: `osc1 + osc2 → low-pass filter → amp (ADSR) → master`.
 Master bus: `master gain → limiter → output`.

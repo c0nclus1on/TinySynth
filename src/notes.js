@@ -14,23 +14,28 @@ export function isBlack(m) {
   return NOTE_NAMES[((m % 12) + 12) % 12].includes('#');
 }
 
-// Computer-keyboard layout. Every key on the home row and the top QWERTY row
-// plays a note, ascending chromatically left -> right: the home row is the
-// lower octave and the top row the octave above it. Z / X shift the octave
-// (handled in main.js).
+// Two-octave "piano" computer-keyboard layout. The letter rows are the natural
+// notes and the row above each holds the sharps, like a real piano:
+//   lower octave -> Z X C V B N M (naturals) + S D G H J (sharps)
+//   upper octave -> Q W E R T Y U (naturals) + 2 3 5 6 7 (sharps)
+// A few extra keys reach into the next octave. Semitones are offsets from the
+// current base note; the arrow keys shift the octave (handled in main.js).
 export const KEY_LAYOUT = [
-  // home row — lower octave (C .. A#)
-  { key: 'a', semi: 0 },  { key: 's', semi: 1 },  { key: 'd', semi: 2 },
-  { key: 'f', semi: 3 },  { key: 'g', semi: 4 },  { key: 'h', semi: 5 },
-  { key: 'j', semi: 6 },  { key: 'k', semi: 7 },  { key: 'l', semi: 8 },
-  { key: ';', semi: 9 },  { key: "'", semi: 10 },
-  // top row — upper octave (B .. A#)
-  { key: 'q', semi: 11 }, { key: 'w', semi: 12 }, { key: 'e', semi: 13 },
-  { key: 'r', semi: 14 }, { key: 't', semi: 15 }, { key: 'y', semi: 16 },
-  { key: 'u', semi: 17 }, { key: 'i', semi: 18 }, { key: 'o', semi: 19 },
-  { key: 'p', semi: 20 }, { key: '[', semi: 21 }, { key: ']', semi: 22 },
+  // upper octave — naturals on the Q-row, sharps on the number row
+  { key: 'q', semi: 12 }, { key: '2', semi: 13 }, { key: 'w', semi: 14 },
+  { key: '3', semi: 15 }, { key: 'e', semi: 16 }, { key: 'r', semi: 17 },
+  { key: '5', semi: 18 }, { key: 't', semi: 19 }, { key: '6', semi: 20 },
+  { key: 'y', semi: 21 }, { key: '7', semi: 22 }, { key: 'u', semi: 23 },
+  { key: 'i', semi: 24 }, { key: '9', semi: 25 }, { key: 'o', semi: 26 },
+  { key: '0', semi: 27 }, { key: 'p', semi: 28 },
+  // lower octave — naturals on the Z-row, sharps on the home row
+  { key: 'z', semi: 0 },  { key: 's', semi: 1 },  { key: 'x', semi: 2 },
+  { key: 'd', semi: 3 },  { key: 'c', semi: 4 },  { key: 'v', semi: 5 },
+  { key: 'g', semi: 6 },  { key: 'b', semi: 7 },  { key: 'h', semi: 8 },
+  { key: 'n', semi: 9 },  { key: 'j', semi: 10 }, { key: 'm', semi: 11 },
+  { key: ',', semi: 12 }, { key: 'l', semi: 13 }, { key: '.', semi: 14 },
+  { key: ';', semi: 15 }, { key: '/', semi: 16 },
 ];
 
-// Semitones the on-screen keyboard spans — a little past the last mapped key
-// so the keyboard ends on a natural (white) note.
-export const KEY_SPAN = 24;
+// Semitones the on-screen keyboard spans (~2.5 octaves), ending on a natural.
+export const KEY_SPAN = 29;

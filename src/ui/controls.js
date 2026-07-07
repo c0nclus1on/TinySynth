@@ -52,6 +52,9 @@ export function buildControls(root, synth) {
       if (readout) readout.textContent = fmt(val, el.dataset.unit);
     };
     el.addEventListener('input', update);
+    // Return focus to the document after committing a value, so the computer
+    // keyboard keeps playing notes instead of the control swallowing them.
+    el.addEventListener('change', () => el.blur());
   });
 }
 

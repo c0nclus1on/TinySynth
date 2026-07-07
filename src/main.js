@@ -33,16 +33,24 @@ function setOctave(delta) {
 document.getElementById('octDown').addEventListener('click', () => setOctave(-1));
 document.getElementById('octUp').addEventListener('click', () => setOctave(1));
 
+// Drop focus from a select/slider so it stops swallowing note keys.
+function blurControl(el) {
+  if (el && (el.tagName === 'SELECT' || el.tagName === 'INPUT')) el.blur();
+}
+
 window.addEventListener('keydown', (e) => {
   if (e.repeat || e.metaKey || e.ctrlKey || e.altKey) return;
-  const tag = document.activeElement?.tagName;
-  if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+  const ae = document.activeElement;
+  // Only genuine text fields should capture typing (there are none in the UI);
+  // sliders and selects must not block playing.
+  if (ae && (ae.tagName === 'TEXTAREA' || (ae.tagName === 'INPUT' && ae.type !== 'range'))) return;
   const key = e.key.toLowerCase();
-  if (key === 'z') { e.preventDefault(); setOctave(-1); return; }
-  if (key === 'x') { e.preventDefault(); setOctave(1); return; }
+  if (key === 'z') { e.preventDefault(); blurControl(ae); setOctave(-1); return; }
+  if (key === 'x') { e.preventDefault(); blurControl(ae); setOctave(1); return; }
   const entry = KEY_LAYOUT.find((x) => x.key === key);
   if (!entry || heldKeys.has(key)) return;
   e.preventDefault();
+  blurControl(ae);
   const midi = base + entry.semi;
   synth.resume();
   synth.noteOn(midi);

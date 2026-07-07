@@ -36,25 +36,33 @@ export function buildControls(root, synth) {
     const path = el.dataset.path;
     const isLog = el.dataset.curve === 'log';
     const readout = el.parentElement.querySelector('.val');
-    const update = () => {
-      let val;
-      if (el.tagName === 'SELECT') {
-        val = el.value;
-      } else if (isLog) {
+    const readValue = () => {
+      if (el.tagName === 'SELECT') return el.value;
+      if (isLog) {
         const t = parseFloat(el.value);
         const min = parseFloat(el.dataset.min);
         const max = parseFloat(el.dataset.max);
-        val = min * Math.pow(max / min, t);
-      } else {
-        val = parseFloat(el.value);
+        return min * Math.pow(max / min, t);
       }
-      synth.set(path, val);
-      if (readout) readout.textContent = fmt(val, el.dataset.unit);
+      return parseFloat(el.value);
     };
-    el.addEventListener('input', update);
-    // Return focus to the document after committing a value, so the computer
-    // keyboard keeps playing notes instead of the control swallowing them.
-    el.addEventListener('change', () => el.blur());
+    const showValue = () => {
+      if (readout) readout.textContent = fmt(readValue(), el.dataset.unit);
+    };
+    const apply = () => {
+      synth.set(path, readValue());
+      showValue();
+    };
+
+    if (el.tagName === 'SELECT') {
+      // Nothing to drag: apply on change, then hand focus back to the keyboard.
+      el.addEventListener('change', () => { apply(); el.blur(); });
+    } else {
+      // Sliders apply in real time while dragging — the engine smooths the
+      // continuous params so fast moves don't zipper. Focus returns on release.
+      el.addEventListener('input', apply);
+      el.addEventListener('change', () => el.blur());
+    }
   });
 }
 

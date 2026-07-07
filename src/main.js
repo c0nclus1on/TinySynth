@@ -48,9 +48,11 @@ function setOctave(delta) {
 document.getElementById('octDown').addEventListener('click', () => setOctave(-1));
 document.getElementById('octUp').addEventListener('click', () => setOctave(1));
 
-// Drop focus from a select/slider so it stops swallowing note keys.
+// Drop focus from a <select> so its type-ahead doesn't swallow note letters.
+// Sliders are intentionally left alone so playing a note never interrupts a
+// drag in progress.
 function blurControl(el) {
-  if (el && (el.tagName === 'SELECT' || el.tagName === 'INPUT')) el.blur();
+  if (el && el.tagName === 'SELECT') el.blur();
 }
 
 window.addEventListener('keydown', (e) => {

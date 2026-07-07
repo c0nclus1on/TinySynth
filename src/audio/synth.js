@@ -209,22 +209,29 @@ export class Synth {
     if (this.ready) this._apply(path, value);
   }
 
+  // Smoothly glide a continuous AudioParam to a new value. ~20 ms is fast
+  // enough to feel immediate while avoiding the zipper noise of hard-setting
+  // .value on every slider-drag event.
+  _ramp(param, value) {
+    param.setTargetAtTime(value, this.ctx.currentTime, 0.02);
+  }
+
   _apply(path, value) {
     switch (path) {
       case 'osc1.wave': for (const v of this.voices.values()) v.osc1.type = value; break;
       case 'osc2.wave': for (const v of this.voices.values()) v.osc2.type = value; break;
-      case 'osc2.detune': for (const v of this.voices.values()) v.osc2.detune.value = value; break;
-      case 'osc2.level': for (const v of this.voices.values()) v.osc2gain.gain.value = value; break;
-      case 'filter.cutoff': for (const v of this.voices.values()) v.filter.frequency.value = value; break;
-      case 'filter.q': for (const v of this.voices.values()) v.filter.Q.value = value; break;
+      case 'osc2.detune': for (const v of this.voices.values()) this._ramp(v.osc2.detune, value); break;
+      case 'osc2.level': for (const v of this.voices.values()) this._ramp(v.osc2gain.gain, value); break;
+      case 'filter.cutoff': for (const v of this.voices.values()) this._ramp(v.filter.frequency, value); break;
+      case 'filter.q': for (const v of this.voices.values()) this._ramp(v.filter.Q, value); break;
       case 'lfo.wave': this.lfo.type = value; break;
-      case 'lfo.rate': this.lfo.frequency.value = value; break;
-      case 'lfo.depth': this.lfoDepth.gain.value = this._lfoDepthValue(); break;
+      case 'lfo.rate': this._ramp(this.lfo.frequency, value); break;
+      case 'lfo.depth': this._ramp(this.lfoDepth.gain, this._lfoDepthValue()); break;
       case 'lfo.dest':
-        this.lfoDepth.gain.value = this._lfoDepthValue();
+        this._ramp(this.lfoDepth.gain, this._lfoDepthValue());
         for (const v of this.voices.values()) this._routeLFO(v);
         break;
-      case 'master.volume': this.master.gain.value = value; break;
+      case 'master.volume': this._ramp(this.master.gain, value); break;
       // env.* is read at the next noteOn — nothing live to update.
     }
   }

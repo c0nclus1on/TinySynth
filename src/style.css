@@ -39,6 +39,8 @@ select { font: inherit; color: inherit; }
   margin-bottom: 18px;
 }
 .topbar h1 { font-size: 1.3rem; margin: 0; }
+.midi-status { color: var(--muted); font-size: 0.82rem; margin-left: auto; margin-right: 14px; }
+.midi-status.on { color: var(--accent); }
 .octave-ctl { display: flex; align-items: center; gap: 10px; }
 .octave-ctl span { color: var(--muted); font-size: 0.9rem; min-width: 92px; text-align: center; }
 .octave-ctl button {

@@ -104,7 +104,7 @@ export class Synth {
     }
   }
 
-  noteOn(midi) {
+  noteOn(midi, velocity = 1) {
     this.init();
     if (this.ctx.state === 'suspended') this.ctx.resume();
     if (this.voices.has(midi)) this._hardStop(midi); // retrigger
@@ -141,10 +141,11 @@ export class Synth {
     // ADSR attack + decay to sustain.
     const a = Math.max(0.001, p.env.a);
     const d = Math.max(0.001, p.env.d);
+    const peak = PEAK * velocity;
     amp.gain.cancelScheduledValues(now);
     amp.gain.setValueAtTime(0, now);
-    amp.gain.linearRampToValueAtTime(PEAK, now + a);
-    amp.gain.linearRampToValueAtTime(PEAK * p.env.s, now + a + d);
+    amp.gain.linearRampToValueAtTime(peak, now + a);
+    amp.gain.linearRampToValueAtTime(peak * p.env.s, now + a + d);
 
     const voice = { midi, osc1, osc2, osc2gain, filter, amp, lfoConns: [] };
     this._routeLFO(voice);

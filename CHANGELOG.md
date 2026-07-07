@@ -5,6 +5,15 @@ All notable changes to TinySynth are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-07-07
+
+### Added
+- Web MIDI input: hardware note on/off with velocity (scales note loudness),
+  routed through the same ref-counted note gate as the computer and on-screen
+  keyboards so all inputs play together. Hot-plug support and a device
+  indicator in the top bar; no-ops gracefully where MIDI is unsupported or
+  permission is denied.
+
 ## [0.2.0] - 2026-07-07
 
 ### Added
@@ -39,5 +48,6 @@ First proof-of-concept release.
 - Embeddable engine (`src/audio/synth.js`): DOM-free, accepts an optional shared
   `AudioContext` and output node, with `noteOn`/`noteOff`/`set`/`panic`/`dispose`.
 
+[0.3.0]: https://github.com/c0nclus1on/TinySynth/releases/tag/v0.3.0
 [0.2.0]: https://github.com/c0nclus1on/TinySynth/releases/tag/v0.2.0
 [0.1.0]: https://github.com/c0nclus1on/TinySynth/releases/tag/v0.1.0

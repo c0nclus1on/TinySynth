@@ -3,6 +3,7 @@ import { Synth } from './audio/synth.js';
 import { createPiano } from './ui/piano.js';
 import { buildControls } from './ui/controls.js';
 import { KEY_LAYOUT, KEY_SPAN } from './notes.js';
+import { initMidi } from './midi.js';
 
 // Standalone app wiring. The Synth engine itself is UI-agnostic and can be
 // imported into a host app on its own (see README "Using it as a module").
@@ -15,10 +16,10 @@ buildControls(document.getElementById('controls'), synth);
 
 // Ref-counted note gate so overlapping inputs (a seam note reachable from two
 // keys, or mouse + keyboard on the same note) don't cut each other off.
-function pressMidi(midi) {
+function pressMidi(midi, velocity = 1) {
   synth.resume();
   const c = midiRefCount.get(midi) || 0;
-  if (c === 0) { synth.noteOn(midi); piano.setActive(midi, true); }
+  if (c === 0) { synth.noteOn(midi, velocity); piano.setActive(midi, true); }
   midiRefCount.set(midi, c + 1);
 }
 function releaseMidi(midi) {
@@ -92,4 +93,21 @@ window.addEventListener('blur', () => {
   heldKeys.clear();
   midiRefCount.clear();
   synth.panic();
+});
+
+// Optional hardware MIDI input — routes through the same ref-counted gate, so
+// it plays alongside the computer/on-screen keyboards.
+const midiEl = document.getElementById('midi');
+function setMidiStatus(text, on) {
+  midiEl.textContent = text;
+  midiEl.classList.toggle('on', !!on);
+}
+initMidi({
+  onNoteOn: (midi, velocity) => pressMidi(midi, velocity),
+  onNoteOff: (midi) => releaseMidi(midi),
+  onState: ({ supported, devices }) => {
+    if (!supported) return setMidiStatus('MIDI: unsupported', false);
+    if (devices && devices.length) return setMidiStatus(`MIDI: ${devices.join(', ')}`, true);
+    setMidiStatus('MIDI: no device', false);
+  },
 });

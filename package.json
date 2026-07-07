@@ -1,7 +1,7 @@
 {
   "name": "tinysynth",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "description": "A tiny polyphonic web synthesizer (proof of concept) built on the Web Audio API.",
   "author": "c0nclus1on <arwindh@gmail.com>",
